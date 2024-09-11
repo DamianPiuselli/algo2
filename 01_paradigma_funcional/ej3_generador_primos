@@ -1,0 +1,24 @@
+from typing import Generator
+
+
+def es_primo(num: int) -> bool:
+    if num < 2:
+        return False
+    for i in range(2, num):
+        if num % i == 0:
+            return False
+    return True
+
+
+def generador_primos() -> Generator[int, None, None]:
+    num = 2
+    while True:
+        if es_primo(num):
+            yield num
+        num += 1
+
+
+if __name__ == "__main__":
+    gen = generador_primos()
+    for _ in range(50):
+        print(next(gen))

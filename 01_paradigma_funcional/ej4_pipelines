@@ -1,0 +1,56 @@
+from typing import Iterator, List, Union
+
+Numeric = Union[int, float]
+
+
+def line_generator(filepath: str) -> Iterator[str]:
+    with open(filepath, "r") as file:
+        for line in file:
+            yield line.strip()
+
+
+def field_generator(line_generator: Iterator[str]) -> Iterator[List[str]]:
+    for line in line_generator:
+        yield line.split(",")
+
+
+def dict_generator(field_generator: Iterator[List[str]]) -> Iterator[dict]:
+    headers = next(field_generator)
+    for fields in field_generator:
+        yield dict(zip(headers, fields))
+
+
+def sepal_width_gen(dict_generator: Iterator[dict]) -> Iterator[float]:
+    for flower in dict_generator:
+        if flower["species"] == "Iris-setosa":
+            yield float(flower["sepal_width"])
+
+
+def generator_mean(gen: Iterator[Numeric]) -> float:
+    n: int = 0
+    sum: float = 0
+
+    for val in gen:
+        n += 1
+        sum += val
+
+    return sum / n
+
+
+if __name__ == "__main__":
+    ## SUMA
+    gen = line_generator("datasets\IRIS.csv")
+    field_gen = field_generator(gen)
+    dict_gen = dict_generator(field_gen)
+
+    sepal_gen = sepal_width_gen(dict_gen)
+    sepal_width_setosa_sum = sum(sepal_gen)
+    print(sepal_width_setosa_sum)
+
+    ## PROMEDIO
+    gen = line_generator("datasets\IRIS.csv")
+    field_gen = field_generator(gen)
+    dict_gen = dict_generator(field_gen)
+
+    sepal_gen = sepal_width_gen(dict_gen)
+    print(generator_mean(sepal_gen))

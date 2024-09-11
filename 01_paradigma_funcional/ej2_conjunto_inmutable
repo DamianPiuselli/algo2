@@ -1,0 +1,31 @@
+from typing import Any, Tuple, Iterator
+
+
+class ConjuntoInmutable:
+    def __init__(self, *elementos: Any) -> None:
+        self._elementos: Tuple[Any, ...] = tuple(set(elementos))
+
+    def __contains__(self, item: Any) -> bool:
+        return item in self._elementos
+
+    def __iter__(self) -> Iterator[Any]:
+        return iter(self._elementos)
+
+    def __len__(self) -> int:
+        return len(self._elementos)
+
+    def __repr__(self) -> str:
+        return f"ConjuntoInmutable({self._elementos})"
+
+
+if __name__ == "__main__":
+    conjunto = ConjuntoInmutable(1, 2, 3, 3, 4, 5)
+
+    print(conjunto)  # Imprime: ConjuntoInmutable(1, 2, 3, 4, 5)
+    print(3 in conjunto)  # True
+    print(10 in conjunto)  # False
+    print(len(conjunto))  # 5
+
+    # Iterar sobre el conjunto
+    for elemento in conjunto:
+        print(elemento)

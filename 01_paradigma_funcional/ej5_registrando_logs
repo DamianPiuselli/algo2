@@ -1,0 +1,18 @@
+from typing import Callable
+
+
+def log(tipo: str) -> Callable[[str], None]:
+    def registrar_mensaje(mensaje: str) -> None:
+        print(f"[{tipo}] {mensaje}")
+
+    return registrar_mensaje
+
+
+if __name__ == "__main__":
+    log_error = log("error")
+    log_alerta = log("alerta")
+    log_informacion = log("información")
+
+    log_error("Ocurrió un error inesperado")
+    log_alerta("Este es un mensaje de alerta")
+    log_informacion("La operación se completó correctamente")
