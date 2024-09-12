@@ -78,24 +78,45 @@ class Lista(Generic[T]):
             return actual
 
     def join(self, separador: str = "") -> str:
-        pass
+        if self.es_vacia():
+            return ""
+        if self.tail().es_vacia():
+            return str(self.head())
+        return str(self.head()) + separador + self.tail().join(separador)
 
     def index(self, valor: T) -> int:
-        pass
+        if self.es_vacia():
+            raise ValueError("valor no encontrado")
+        if self.head() == valor:
+            return 0
+        return 1 + self.tail().index(valor)
 
     def existe(self, valor: T) -> bool:
-        pass
+        if self.es_vacia():
+            return False
+        if self.head() == valor:
+            return True
+        else:
+            return self.tail().existe(valor)
 
     def __repr__(self):
         if self.es_vacia():
             return "[]"
         elif self.tail().es_vacia():
-            return str(self.head())
+            return str(self.head()) + "]"
         else:
             return str(self.head()) + "," + repr(self.tail())
 
-    def __eq__(self, otra: ListaGenerica) -> bool:
-        pass
+    def __eq__(self, otra: object) -> bool:
+        if not isinstance(otra, Lista):
+            return NotImplemented
+        if self.es_vacia() and otra.es_vacia():
+            return True
+        if self.es_vacia() or otra.es_vacia():
+            return False
+        if self.head() == otra.head():
+            return self.tail() == otra.tail()
+        return False
 
     def __len__(self) -> int:
         if self.es_vacia():
