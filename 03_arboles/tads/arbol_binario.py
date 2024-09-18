@@ -111,8 +111,10 @@ class ArbolBinario(Generic[T]):
     def bfs(self) -> list[T]:
         pass
 
+    #given a value of a node, find the node with that value and return the level of the node. root node start as one.
     def nivel(self, x: T) -> int:
-        pass
+        if self.dato == x:
+            
 
     def copy(self) -> "ArbolBinario[T]":
         pass
