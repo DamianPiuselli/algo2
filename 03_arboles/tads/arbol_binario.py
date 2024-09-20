@@ -111,8 +111,20 @@ class ArbolBinario(Generic[T]):
         else:
             return self.si().inorder() + [self.dato()] + self.sd().inorder()
 
+    # DFS inorder sin recursion de cola
     def inorder_tail(self) -> list[T]:
-        pass
+        stack = []
+        out = []
+        current = self
+        while stack or current:
+            if current:
+                stack.append(current)
+                current = current.si()
+            else:
+                current = stack.pop()
+                out.append(current.dato())
+                current = current.sd()
+        return out
 
     def preorder(self) -> list[T]:
         if self.es_vacio():
@@ -139,6 +151,7 @@ class ArbolBinario(Generic[T]):
                     queue.append(t.si())
                 if not t.sd().es_vacio():
                     queue.append(t.sd())
+            return out
 
     # given a value of a node, find the node with that value and return the level of the node. root node start as one.
     def nivel(self, x: T) -> int:
@@ -158,10 +171,24 @@ class ArbolBinario(Generic[T]):
             return new_tree
 
     def espejo(self) -> "ArbolBinario[T]":
-        if self.es_va
+        if self.es_vacio():
+            return ArbolBinario()
+        else:
+            new_tree = ArbolBinario()
+            new_tree.set_raiz(
+                NodoAB(self.dato(), self.sd().espejo(), self.si().espejo())
+            )
+            return new_tree
 
-    def sin_hojas(self):
-        pass
+    def sin_hojas(self) -> "ArbolBinario[T]":
+        if self.es_vacio() or self.es_hoja():
+            return ArbolBinario()
+        else:
+            new_tree = ArbolBinario()
+            new_tree.set_raiz(
+                NodoAB(self.dato(), self.si().sin_hojas(), self.sd().sin_hojas())
+            )
+            return new_tree
 
     def recorrido_guiado(self, recorrido: list[str]) -> Optional[T]:
         if self.raiz == None:
